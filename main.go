@@ -40,27 +40,16 @@ func makeForest(x int, y int, p int) [][]forest {
 
 	howManyTrees := (float64(x) * float64(y)) * (float64(p) / 100)
 
-	for a := range int(howManyTrees) {
+	count := 0
+	for count < int(howManyTrees) {
 		i := rand.Intn(x)
 		j := rand.Intn(y)
-		fmt.Println(a)
 
 		if !grid[i][j].isTree {
 			grid[i][j].isTree = true
-		} else {
-			howManyTrees++
+			count++
 		}
-
 	}
-
-	//for i := range grid {
-	//	for j := range grid[i] {
-	//		grid[i][j] = forest{
-	//			isTree:   rand.Intn(2) == 1,
-	//			isBurned: false,
-	//		}
-	//	}
-	//}
 
 	return grid
 }
@@ -69,11 +58,8 @@ func thunder(x int, y int, grid [][]forest) {
 	targetX := rand.Intn(x)
 	targetY := rand.Intn(y)
 
-	fmt.Println("\nTarget:", targetX, targetY)
-
 	if !grid[targetX][targetY].isTree {
-		fmt.Println("Target was empty. Repeating.")
-		thunder(x, y, grid)
+		return
 	}
 
 	grid[targetX][targetY].isBurned = true
@@ -97,8 +83,21 @@ func thunder(x int, y int, grid [][]forest) {
 				}
 			}
 		}
-		printForest(grid)
 	}
+}
+
+func countTrees(grid [][]forest) int {
+	howManyTrees := 0
+
+	for _, row := range grid {
+		for _, cell := range row {
+			if cell.isTree && !cell.isBurned {
+				howManyTrees++
+			}
+		}
+	}
+
+	return howManyTrees
 }
 
 func printForest(grid [][]forest) {
@@ -128,11 +127,23 @@ func main() {
 	y := parameters[1]
 	p := parameters[2]
 
-	grid := makeForest(x, y, p)
-	fmt.Print("Forest: ")
-	printForest(grid)
+	var n = 100
 
-	//thunder(x, y, grid)
-	//fmt.Println("Forest after thunder: ")
-	//printForest(grid)
+	treesCount := make([]int, n)
+	for i := range n {
+		grid := makeForest(x, y, p)
+		thunder(x, y, grid)
+		howManyTrees := countTrees(grid)
+
+		treesCount[i] = howManyTrees
+	}
+
+	sum := 0
+	for _, v := range treesCount {
+		sum += v
+	}
+	average := sum / n
+	averagePercent := (float64(average) / float64(x*y)) * 100
+
+	fmt.Println("For density of forest", p, "% on average trees left", int(averagePercent), "%")
 }
