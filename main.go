@@ -24,11 +24,6 @@ func getParameters() [3]int {
 		return [3]int{0, 0, 0}
 	}
 
-	//if parameters[2] > 100 {
-	//	fmt.Println("P must be less or equal to 100!")
-	//	return [3]int{0, 0, 0}
-	//}
-
 	return parameters
 }
 
@@ -127,15 +122,16 @@ func main() {
 	y := parameters[1]
 	p := parameters[2]
 
-	var n = 100
+	var n = 50
 
 	treesCount := make([]int, n)
 	for i := range n {
 		grid := makeForest(x, y, p)
+		howManyTreesBefore := countTrees(grid)
 		thunder(x, y, grid)
-		howManyTrees := countTrees(grid)
+		howManyTreesAfter := countTrees(grid)
 
-		treesCount[i] = howManyTrees
+		treesCount[i] = howManyTreesBefore - howManyTreesAfter
 	}
 
 	sum := 0
@@ -145,5 +141,5 @@ func main() {
 	average := sum / n
 	averagePercent := (float64(average) / float64(x*y)) * 100
 
-	fmt.Println("For density of forest", p, "% on average trees left", int(averagePercent), "%")
+	fmt.Println("For density of forest", p, "% on average trees burnt", int(averagePercent), "%")
 }
