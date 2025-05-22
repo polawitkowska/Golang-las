@@ -1,6 +1,9 @@
 package main
 
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func thunder(x int, y int, grid [][]forest) {
 	targetX := rand.Intn(x)
@@ -32,4 +35,27 @@ func thunder(x int, y int, grid [][]forest) {
 			}
 		}
 	}
+}
+
+func simulation(x int, y int, p float64) {
+	var n = 50
+
+	treesCount := make([]int, n)
+	for i := range n {
+		grid := makeForest(x, y, p)
+		howManyTreesBefore := countTrees(grid)
+		thunder(x, y, grid)
+		howManyTreesAfter := countTrees(grid)
+
+		treesCount[i] = howManyTreesBefore - howManyTreesAfter
+	}
+
+	sum := 0
+	for _, v := range treesCount {
+		sum += v
+	}
+	average := sum / n
+	averagePercent := (float64(average) / float64(x*y)) * 100
+
+	fmt.Printf("For density of forest %.2f%% on average trees burnt %.2f%%\n", p, averagePercent)
 }
