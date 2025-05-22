@@ -6,9 +6,9 @@ import (
 )
 
 func getParameters() (int, int, float64) {
-	x := 10
-	y := 10
-	p := 50.0
+	x := 100
+	y := 100
+	p := 40.0
 	var input string
 
 	fmt.Printf("Enter X (currently %d) or press Enter to skip: ", x)
@@ -38,6 +38,8 @@ func getParameters() (int, int, float64) {
 		if newP, err := strconv.ParseFloat(input, 64); err == nil {
 			if newP <= 0 {
 				fmt.Println("P cannot be 0 or negative! Using default value.")
+			} else if newP > 100 {
+				p = 100
 			} else {
 				p = newP
 			}
@@ -55,13 +57,13 @@ func main() {
 		return
 	}
 
-	grid := makeForest(x, y, p)
-	fmt.Println("Forest before thunder: ")
-	printForest(grid)
+	//grid := makeForest(x, y, p)
+	//fmt.Println("Forest before thunder: ")
+	//printForest(grid)
+	//
+	//thunder(x, y, grid)
+	//fmt.Println("Forest after thunder: ")
+	//printForest(grid)
 
-	thunder(x, y, grid)
-	fmt.Println("Forest after thunder: ")
-	printForest(grid)
-
-	//simulation(x, y, p)
+	simulation(x, y, p)
 }

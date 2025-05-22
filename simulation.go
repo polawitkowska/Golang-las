@@ -9,8 +9,6 @@ func thunder(x int, y int, grid [][]forest) {
 	targetX := rand.Intn(x)
 	targetY := rand.Intn(y)
 
-	fmt.Println("Target: ", targetX, targetY)
-
 	if !grid[targetX][targetY].isTree {
 		return
 	}
