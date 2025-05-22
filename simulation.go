@@ -9,6 +9,8 @@ func thunder(x int, y int, grid [][]forest) {
 	targetX := rand.Intn(x)
 	targetY := rand.Intn(y)
 
+	fmt.Println("Target: ", targetX, targetY)
+
 	if !grid[targetX][targetY].isTree {
 		return
 	}
@@ -28,7 +30,13 @@ func thunder(x int, y int, grid [][]forest) {
 						newI, newJ := i+direction[0], j+direction[1]
 						if newI >= 0 && newI < x && newJ >= 0 && newJ < y &&
 							grid[newI][newJ].isTree && !grid[newI][newJ].isBurned {
-							grid[newI][newJ].isBurned = true
+
+							humidity := grid[newI][newJ].humidity
+							chance := rand.Intn(101)
+
+							if chance > humidity {
+								grid[newI][newJ].isBurned = true
+							}
 						}
 					}
 				}

@@ -6,9 +6,9 @@ import (
 )
 
 func getParameters() (int, int, float64) {
-	x := 100
-	y := 100
-	p := 30.0
+	x := 10
+	y := 10
+	p := 50.0
 	var input string
 
 	fmt.Printf("Enter X (currently %d) or press Enter to skip: ", x)
@@ -55,5 +55,13 @@ func main() {
 		return
 	}
 
-	simulation(x, y, p)
+	grid := makeForest(x, y, p)
+	fmt.Println("Forest before thunder: ")
+	printForest(grid)
+
+	thunder(x, y, grid)
+	fmt.Println("Forest after thunder: ")
+	printForest(grid)
+
+	//simulation(x, y, p)
 }

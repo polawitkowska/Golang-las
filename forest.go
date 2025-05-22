@@ -8,6 +8,7 @@ import (
 type forest struct {
 	isTree   bool
 	isBurned bool
+	humidity int
 }
 
 func makeForest(x int, y int, p float64) [][]forest {
@@ -25,6 +26,7 @@ func makeForest(x int, y int, p float64) [][]forest {
 
 		if !grid[i][j].isTree {
 			grid[i][j].isTree = true
+			grid[i][j].humidity = rand.Intn(101)
 			count++
 		}
 	}
@@ -51,7 +53,7 @@ func printForest(grid [][]forest) {
 		fmt.Println(" ")
 		for _, cell := range row {
 			if cell.isTree && !cell.isBurned {
-				fmt.Print("T ")
+				fmt.Print("T", cell.humidity, " ")
 			} else if cell.isTree && cell.isBurned {
 				fmt.Print("B ")
 			} else {
