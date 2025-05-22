@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
 )
 
 type forest struct {
@@ -10,30 +11,56 @@ type forest struct {
 	isBurned bool
 }
 
-func getParameters() [3]int {
-	var parameters [3]int
-	fmt.Print("Enter X, Y and P:\n")
-	_, err := fmt.Scanln(&parameters[0], &parameters[1], &parameters[2])
-	if err != nil {
-		fmt.Println("Error while getting parameters. Try again.")
-		return [3]int{0, 0, 0}
+func getParameters() (int, int, float64) {
+	x := 20
+	y := 20
+	p := 25.0
+	var input string
+
+	fmt.Printf("Enter X (currently %d) or press Enter to skip: ", x)
+	if _, err := fmt.Scanln(&input); err == nil {
+		if newX, err := strconv.Atoi(input); err == nil {
+			if newX <= 0 {
+				fmt.Println("X cannot be 0 or negative! Using default value.")
+			} else {
+				x = newX
+			}
+		}
 	}
 
-	if parameters[0] <= 0 || parameters[1] <= 0 || parameters[2] <= 0 {
-		fmt.Println("Parameters X, Y and P cannot be 0 or negative! Try again.")
-		return [3]int{0, 0, 0}
+	fmt.Printf("Enter Y (currently %d) or press Enter to skip: ", y)
+	if _, err := fmt.Scanln(&input); err == nil {
+		if newY, err := strconv.Atoi(input); err == nil {
+			if newY <= 0 {
+				fmt.Println("Y cannot be 0 or negative! Using default value.")
+			} else {
+				y = newY
+			}
+		}
 	}
 
-	return parameters
+	fmt.Printf("Enter P (currently %.2f) or press Enter to skip: ", p)
+	if _, err := fmt.Scanln(&input); err == nil {
+		if newP, err := strconv.ParseFloat(input, 64); err == nil {
+			if newP <= 0 {
+				fmt.Println("P cannot be 0 or negative! Using default value.")
+			} else {
+				p = newP
+			}
+		}
+	}
+
+	fmt.Println("x, y and p are:", x, y, p)
+	return x, y, p
 }
 
-func makeForest(x int, y int, p int) [][]forest {
+func makeForest(x int, y int, p float64) [][]forest {
 	grid := make([][]forest, x)
 	for i := range grid {
 		grid[i] = make([]forest, y)
 	}
 
-	howManyTrees := (float64(x) * float64(y)) * (float64(p) / 100)
+	howManyTrees := (float64(x) * float64(y)) * (p / 100)
 
 	count := 0
 	for count < int(howManyTrees) {
@@ -112,15 +139,11 @@ func printForest(grid [][]forest) {
 }
 
 func main() {
-	parameters := getParameters()
+	x, y, p := getParameters()
 
-	if parameters[0] == 0 && parameters[1] == 0 && parameters[2] == 0 {
+	if x == 0 && y == 0 && p == 0 {
 		return
 	}
-
-	x := parameters[0]
-	y := parameters[1]
-	p := parameters[2]
 
 	var n = 50
 
