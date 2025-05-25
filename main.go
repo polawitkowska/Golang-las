@@ -1,53 +1,28 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"strconv"
 )
 
 func getParameters() (int, int, float64) {
-	x := 100
-	y := 100
-	p := 40.0
-	var input string
+	var x = flag.Int("x", 100, "Width of the grid")
+    var y = flag.Int("y", 100, "Height of the grid")
+    var p = flag.Float64("p", 40.0, "Density of trees")
 
-	fmt.Printf("Enter X (currently %d) or press Enter to skip: ", x)
-	if _, err := fmt.Scanln(&input); err == nil {
-		if newX, err := strconv.Atoi(input); err == nil {
-			if newX <= 0 {
-				fmt.Println("X cannot be 0 or negative! Using default value.")
-			} else {
-				x = newX
-			}
-		}
-	}
+    flag.Parse()
 
-	fmt.Printf("Enter Y (currently %d) or press Enter to skip: ", y)
-	if _, err := fmt.Scanln(&input); err == nil {
-		if newY, err := strconv.Atoi(input); err == nil {
-			if newY <= 0 {
-				fmt.Println("Y cannot be 0 or negative! Using default value.")
-			} else {
-				y = newY
-			}
-		}
-	}
+    if *p > 100 {
+        *p = 100
+    }
 
-	fmt.Printf("Enter P (currently %.2f) or press Enter to skip: ", p)
-	if _, err := fmt.Scanln(&input); err == nil {
-		if newP, err := strconv.ParseFloat(input, 64); err == nil {
-			if newP <= 0 {
-				fmt.Println("P cannot be 0 or negative! Using default value.")
-			} else if newP > 100 {
-				p = 100
-			} else {
-				p = newP
-			}
-		}
-	}
+    if *x <= 0 || *y <= 0 || *p <= 0 {
+        fmt.Println("Parameters must be positive numbers!")
+        return 0, 0, 0
+    }
 
-	fmt.Println("x, y and p are:", x, y, p)
-	return x, y, p
+    fmt.Printf("Running simulation with parameters: x=%d, y=%d, p=%.2f\n", *x, *y, *p)
+    return *x, *y, *p
 }
 
 func main() {
@@ -65,5 +40,6 @@ func main() {
 	//fmt.Println("Forest after thunder: ")
 	//printForest(grid)
 
-	simulation(x, y, p)
+	result := simulation(x, y, p)
+	fmt.Printf("%d,%d,%.f,%.2f", x, y, p, result)
 }
