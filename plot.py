@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import griddata
 
-df = pd.read_csv('result.csv')
+df = pd.read_csv('results_with_humidity.csv')
 
 df['grid_size'] = df['x'] * df['y']
 
@@ -31,7 +31,7 @@ ax.set_zlabel('Percentage of Burnt Area', fontsize=12)
 colorbar = plt.colorbar(surface)
 colorbar.set_label('Burnt Area (%)', fontsize=10)
 
-ax.view_init(elev=20, azim=45)
+ax.view_init(elev=16, azim=-57)
 
 plt.tight_layout()
 plt.show()

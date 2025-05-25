@@ -43,7 +43,7 @@ func thunder(x int, y int, grid [][]forest) {
 	}
 }
 
-func simulation(x int, y int, p float64) {
+func simulation(x int, y int, p float64) float64 {
 	var n = 50
 
 	treesCount := make([]int, n)
@@ -64,4 +64,5 @@ func simulation(x int, y int, p float64) {
 	averagePercent := (float64(average) / float64(x*y)) * 100
 
 	fmt.Printf("For density of forest %.2f%% on average trees burnt %.2f%%\n", p, averagePercent)
+	return averagePercent
 }
